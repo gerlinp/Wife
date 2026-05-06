@@ -1,13 +1,13 @@
 /**
  * GSAP stroke transition on React Router navigations (Vite-friendly).
- * `next-transition-router` targets Next.js; deferred `navigate` + GSAP matches covered swap behavior.
+ * Deferred `navigate` + GSAP so `<Outlet />` swaps while the overlay covers the screen.
  */
 import {
   createContext,
   useCallback,
   useContext,
-  useLayoutEffect,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
 } from 'react'
@@ -21,8 +21,6 @@ import {
 import gsap from 'gsap'
 
 const TransitionNavContext = createContext(null)
-
-/** @typedef {import('react-router-dom').NavigateOptions} NavigateOptions */
 
 export function useTransitionNavigate() {
   const ctx = useContext(TransitionNavContext)
@@ -87,12 +85,16 @@ function buildAllPairs(colors) {
   return pairs
 }
 
+const COVER_DURATION = 1
+const REVEAL_DURATION = 0.85
+
 export default function TransitionProvider({ children }) {
   const svgRef = useRef(null)
   const pathsRef = useRef([])
   const location = useLocation()
+  const navigate = useNavigate()
   const remainingPairsRef = useRef(shuffled(buildAllPairs(RAINBOW)))
-  const lastPairColorsRef = useRef(null) // Set([c1,c2]) from previous transition
+  const lastPairColorsRef = useRef(null)
   const introCompleteRef = useRef(false)
   const introTlRef = useRef(null)
   const routeTlRef = useRef(null)
@@ -106,7 +108,6 @@ export default function TransitionProvider({ children }) {
     const last = lastPairColorsRef.current
     const pool = remainingPairsRef.current
 
-    // Prefer a pair that doesn't reuse either previous color.
     let chosenIdx = -1
     if (last) {
       for (let i = pool.length - 1; i >= 0; i -= 1) {
@@ -121,7 +122,6 @@ export default function TransitionProvider({ children }) {
     const [a, b] =
       chosenIdx === -1 ? pool.pop() : pool.splice(chosenIdx, 1)[0]
 
-    // Randomize which color goes to which stroke, but the unordered pair still won't repeat.
     const swap = Math.random() < 0.5
     const c1 = swap ? b : a
     const c2 = swap ? a : b
@@ -157,7 +157,7 @@ export default function TransitionProvider({ children }) {
         {
           strokeDashoffset: lengths[idx],
           strokeWidth: 200,
-          duration: 1,
+          duration: COVER_DURATION,
           ease: 'power1.inOut',
         },
         0,
@@ -169,84 +169,110 @@ export default function TransitionProvider({ children }) {
 
   useLayoutEffect(() => {
     if (!svgRef.current) return
-    pathsRef.current = Array.from(svgRef.current.querySelectorAll('path'))
+    pathsRef.current = Array.from(
+      svgRef.current.querySelectorAll('path.transition-stroke'),
+    )
     const lengths = pathsRef.current.map((p) => p.getTotalLength())
 
     pathsRef.current.forEach((path, idx) => {
-      // Initial load: start in the "covered" state (midway point).
       path.style.strokeDasharray = String(lengths[idx])
       path.style.strokeDashoffset = '0'
       path.style.strokeWidth = '700'
     })
 
-    // Run intro from layout so React 18 StrictMode's effect double-invoke cleanup
-    // doesn't kill the reveal timeline mid-flight (dev-only issue).
     if (!introCompleteRef.current) {
       playIntroReveal(pathsRef.current, lengths)
     }
   }, [])
 
-  useEffect(() => {
-    const paths = pathsRef.current
-    if (!paths.length) return
+  const requestNavigate = useCallback(
+    (to, options) => {
+      const paths = pathsRef.current
+      if (!paths.length) {
+        navigate(to, options)
+        return
+      }
 
-    if (!introCompleteRef.current) {
-      return
-    }
+      if (!introCompleteRef.current) {
+        introTlRef.current?.pause()
+        navigate(to, options)
+        return
+      }
 
-    // Only run transitions when the *pathname changes*.
-    if (lastPathnameRef.current === location.pathname) {
-      return
-    }
+      const resolved = resolvePath(to, location.pathname)
+      if (
+        resolved.pathname === location.pathname &&
+        resolved.search === location.search &&
+        resolved.hash === location.hash
+      ) {
+        return
+      }
 
-    lastPathnameRef.current = location.pathname
+      routeTlRef.current?.kill()
 
-    const lengths = paths.map((p) => p.getTotalLength())
-    paths.forEach((path, idx) => {
-      path.style.strokeDasharray = String(lengths[idx])
-      path.style.strokeDashoffset = String(lengths[idx])
-      path.style.strokeWidth = '200'
-    })
+      const lengths = paths.map((p) => p.getTotalLength())
+      paths.forEach((path, idx) => {
+        path.style.strokeDasharray = String(lengths[idx])
+        path.style.strokeDashoffset = String(lengths[idx])
+        path.style.strokeWidth = '200'
+      })
 
-    setNextStrokeColors()
+      setNextStrokeColors()
 
-    routeTlRef.current?.pause()
-    const tl = gsap.timeline()
-    routeTlRef.current = tl
-    paths.forEach((path) => {
-      tl.to(
-        path,
-        {
-          strokeDashoffset: 0,
-          strokeWidth: 700,
-          duration: 1,
-          ease: 'power1.inOut',
+      const tl = gsap.timeline()
+      routeTlRef.current = tl
+
+      paths.forEach((path) => {
+        tl.to(
+          path,
+          {
+            strokeDashoffset: 0,
+            strokeWidth: 700,
+            duration: COVER_DURATION,
+            ease: 'power1.inOut',
+          },
+          0,
+        )
+      })
+
+      tl.call(
+        () => {
+          navigate(to, options)
         },
-        0,
+        [],
+        COVER_DURATION,
       )
-    })
-    paths.forEach((path, idx) => {
-      tl.to(
-        path,
-        {
-          strokeDashoffset: lengths[idx],
-          strokeWidth: 200,
-          duration: 0.85,
-          ease: 'power1.inOut',
-        },
-        1,
-      )
-    })
 
-    return () => {
-      tl.pause()
-    }
-  }, [location.pathname])
+      paths.forEach((path, idx) => {
+        tl.to(
+          path,
+          {
+            strokeDashoffset: lengths[idx],
+            strokeWidth: 200,
+            duration: REVEAL_DURATION,
+            ease: 'power1.inOut',
+          },
+          COVER_DURATION,
+        )
+      })
+    },
+    [
+      navigate,
+      location.pathname,
+      location.search,
+      location.hash,
+    ],
+  )
+
+  const navContextValue = useMemo(
+    () => ({ requestNavigate }),
+    [requestNavigate],
+  )
 
   useEffect(
     () => () => {
       introTlRef.current?.pause()
-      routeTlRef.current?.pause()
+      routeTlRef.current?.kill()
     },
     [],
   )
@@ -261,18 +287,18 @@ export default function TransitionProvider({ children }) {
         preserveAspectRatio="none"
       >
         <path
+          className="transition-stroke"
           d="M227.549 1818.76C227.549 1818.76 406.016 2207.75 569.049 2130.26C843.431 1999.85 -264.104 1002.3 227.549 876.262C552.918 792.849 773.647 2456.11 1342.05 2130.26C1885.43 1818.76 14.9644 455.772 760.548 137.262C1342.05 -111.152 1663.5 2266.35 2209.55 1972.76C2755.6 1679.18 1536.63 384.467 1826.55 137.262C2013.5 -22.1463 2209.55 381.262 2209.55 381.262"
           stroke="var(--transition-stroke-1)"
-          // Render covered state immediately (before effects compute real dash lengths).
           strokeDasharray="99999"
           strokeDashoffset="0"
           strokeWidth="700"
           strokeLinecap="round"
         />
         <path
+          className="transition-stroke"
           d="M1661.28 2255.51C1661.28 2255.51 2311.09 1960.37 2111.78 1817.01C1944.47 1696.67 718.456 2870.17 499.781 2255.51C308.969 1719.17 2457.51 1613.83 2111.78 963.512C1766.05 313.198 427.949 2195.17 132.281 1455.51C-155.219 736.292 2014.78 891.514 1708.78 252.012C1437.81 -314.29 369.471 909.169 132.281 566.512C18.1772 401.672 244.781 193.012 244.781 193.012"
           stroke="var(--transition-stroke-2)"
-          // Render covered state immediately (before effects compute real dash lengths).
           strokeDasharray="99999"
           strokeDashoffset="0"
           strokeWidth="700"
@@ -285,7 +311,9 @@ export default function TransitionProvider({ children }) {
   return (
     <>
       {createPortal(overlay, document.body)}
-      <div className="transition-page">{children}</div>
+      <TransitionNavContext.Provider value={navContextValue}>
+        {children}
+      </TransitionNavContext.Provider>
     </>
   )
 }
