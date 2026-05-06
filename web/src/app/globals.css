@@ -218,3 +218,25 @@ code {
   position: relative;
   z-index: 2;
 }
+
+/* HTML brush above stroke overlay (.transition-svg); positioned in JS via getScreenCTM() */
+.transition-brush-follow-html {
+  position: fixed;
+  inset: 0;
+  z-index: 10003;
+  margin: 0;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.transition-brush-follow-html img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.4));
+  will-change: left, top, transform;
+}
