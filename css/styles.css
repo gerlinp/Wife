@@ -809,12 +809,13 @@ body[data-section="writing"]:not(.menu-open) .site-nav .nav-num {
 }
 .about-portrait { display: flex; flex-direction: column; align-items: center; }
 .about-portrait .paper-swatch {
-  height: min(600px, calc(100vh - 180px));
-  height: min(600px, calc(min(100vh, 100svh) - 180px));
   padding: 14px 14px 56px;
   overflow: hidden;
   margin: 0 auto;
   width: min(520px, 100%);
+  height: auto;
+  /* Cap by viewport height without breaking aspect ratio */
+  max-height: min(600px, calc(min(100vh, 100svh) - 180px));
 }
 .about-portrait .swatch-tag {
   left: 20px;
@@ -823,7 +824,6 @@ body[data-section="writing"]:not(.menu-open) .site-nav .nav-num {
   line-height: 1.35;
 }
 .about-portrait .swatch-img {
-  height: 100%;
   width: 100%;
   object-fit: cover;
   object-position: center top;
@@ -1830,6 +1830,23 @@ body[data-section="contact"] #app-shell > .site-foot .foot-credit:hover {
     );
     aspect-ratio: 11 / 14;
     transform: rotate(-1.5deg);
+    transform-origin: center center;
+  }
+
+  /* About portrait follows the same width-driven scaling as Home */
+  .section-about .paper-swatch {
+    margin: 0 auto;
+    height: auto;
+    width: min(
+      340px,
+      calc(100vw - 2 * var(--page-pad-x) - clamp(28px, 6vw + 2vmin, 52px))
+    );
+    max-width: none;
+    max-height: min(
+      420px,
+      calc(100svh - var(--nav-clear) - clamp(260px, 60svmin, 380px))
+    );
+    aspect-ratio: 11 / 14;
     transform-origin: center center;
   }
 }
