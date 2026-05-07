@@ -3,38 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- For GitHub Pages project site: content="/Wife" (no trailing slash). For local / root host: content="/" -->
-    <meta name="site-base" content="/" />
-    <title>Serica</title>
+    <title>Serica Jones — paintings + writing</title>
     <link rel="stylesheet" href="css/styles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
   </head>
   <body>
+
+    <!-- Paint transition layers -->
     <div class="transition-svg" aria-hidden="true">
-      <svg
-        viewBox="0 0 2453 2535"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-      >
-        <path
-          class="transition-stroke"
+      <svg viewBox="0 0 2453 2535" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path class="transition-stroke"
           d="M227.549 1818.76C227.549 1818.76 406.016 2207.75 569.049 2130.26C843.431 1999.85 -264.104 1002.3 227.549 876.262C552.918 792.849 773.647 2456.11 1342.05 2130.26C1885.43 1818.76 14.9644 455.772 760.548 137.262C1342.05 -111.152 1663.5 2266.35 2209.55 1972.76C2755.6 1679.18 1536.63 384.467 1826.55 137.262C2013.5 -22.1463 2209.55 381.262 2209.55 381.262"
-          stroke="var(--transition-stroke-1)"
-          stroke-dasharray="99999"
-          stroke-dashoffset="0"
-          stroke-width="700"
-          stroke-linecap="round"
-        ></path>
-        <path
-          class="transition-stroke"
+          stroke="var(--transition-stroke-1)" stroke-dasharray="99999" stroke-dashoffset="0"
+          stroke-width="700" stroke-linecap="round" fill="none"></path>
+        <path class="transition-stroke"
           d="M1661.28 2255.51C1661.28 2255.51 2311.09 1960.37 2111.78 1817.01C1944.47 1696.67 718.456 2870.17 499.781 2255.51C308.969 1719.17 2457.51 1613.83 2111.78 963.512C1766.05 313.198 427.949 2195.17 132.281 1455.51C-155.219 736.292 2014.78 891.514 1708.78 252.012C1437.81 -314.29 369.471 909.169 132.281 566.512C18.1772 401.672 244.781 193.012 244.781 193.012"
-          stroke="var(--transition-stroke-2)"
-          stroke-dasharray="99999"
-          stroke-dashoffset="0"
-          stroke-width="700"
-          stroke-linecap="round"
-        ></path>
+          stroke="var(--transition-stroke-2)" stroke-dasharray="99999" stroke-dashoffset="0"
+          stroke-width="700" stroke-linecap="round" fill="none"></path>
       </svg>
     </div>
 
@@ -42,49 +26,492 @@
       <img src="assets/painbrush.svg" alt="" draggable="false" />
     </div>
 
-    <div id="app-shell">
-      <nav class="navbar">
-        <div class="navbar-logo">
-          <div class="navbar-item">
-            <a data-nav="/">Serica</a>
-          </div>
-        </div>
-        <div class="navbar-items">
-          <div class="navbar-item">
-            <a data-nav="/">Home</a>
-          </div>
-          <div class="navbar-item">
-            <a data-nav="/about">About</a>
-          </div>
-          <div class="navbar-item">
-            <a data-nav="/contact">Contact</a>
-          </div>
-        </div>
-      </nav>
+    <!-- Nav -->
+    <nav class="site-nav">
+      <div class="nav-mark" data-nav="home">Serica Jones</div>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="site-menu"
+      >
+        <span class="nav-toggle-menu" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="nav-toggle-close" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </button>
+      <ul id="site-nav-menu">
+        <li><button data-nav="home" class="active"><span class="nav-num">01.</span><span>home</span></button></li>
+        <li><button data-nav="gallery"><span class="nav-num">02.</span><span>gallery</span></button></li>
+        <li><button data-nav="about"><span class="nav-num">03.</span><span>about</span></button></li>
+        <li><button data-nav="resume"><span class="nav-num">04.</span><span>resume</span></button></li>
+        <li><button data-nav="writing"><span class="nav-num">05.</span><span>writing</span></button></li>
+        <li><button data-nav="contact"><span class="nav-num">06.</span><span>contact</span></button></li>
+      </ul>
+    </nav>
 
-      <div class="transition-page">
-        <div id="page-stage"></div>
+    <!-- Mobile off-canvas menu (behavior borrowed; styling is site-native) -->
+    <aside class="site-menu" id="site-menu" aria-hidden="true">
+      <button class="site-menu-backdrop" type="button" aria-label="Close menu"></button>
+      <div class="site-menu-panel" role="dialog" aria-modal="true" aria-label="Site menu">
+        <div class="site-menu-head">
+          <div class="site-menu-logo">Serica Jones</div>
+        </div>
+        <ul class="site-menu-links">
+          <li>
+            <button type="button" data-nav="home">
+              <div class="site-menu-link">
+                <div class="site-menu-num">01.</div>
+                <div class="site-menu-label">home</div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-nav="gallery">
+              <div class="site-menu-link">
+                <div class="site-menu-num">02.</div>
+                <div class="site-menu-label">gallery</div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-nav="about">
+              <div class="site-menu-link">
+                <div class="site-menu-num">03.</div>
+                <div class="site-menu-label">about</div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-nav="resume">
+              <div class="site-menu-link">
+                <div class="site-menu-num">04.</div>
+                <div class="site-menu-label">resume</div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-nav="writing">
+              <div class="site-menu-link">
+                <div class="site-menu-num">05.</div>
+                <div class="site-menu-label">writing</div>
+              </div>
+            </button>
+          </li>
+          <li>
+            <button type="button" data-nav="contact">
+              <div class="site-menu-link">
+                <div class="site-menu-num">06.</div>
+                <div class="site-menu-label">contact</div>
+              </div>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Sections -->
+    <div id="app-shell">
+
+      <!-- 01 HOME -->
+      <section class="section section-home active">
+        <div class="home-grid">
+          <div class="home-eyebrow">
+            <span class="dot"></span> Serica Jones <span class="muted"> · artist &amp; art educator</span>
+          </div>
+          <h1 class="home-title">
+            <span class="line">Painted</span>
+            <span class="line italic">in the time</span>
+            <span class="line">it takes a</span>
+            <span class="line accent">brush to lift.</span>
+          </h1>
+          <p class="home-lede">
+            Paintings and mixed-media works — landscapes carried from memory and portraits built up in layers. When she isn’t in the studio, she’s in the classroom teaching foundations and critique.
+          </p>
+          <div class="home-cta">
+            <button class="btn btn-primary" data-nav="gallery">View the work <span class="arrow">→</span></button>
+            <button class="btn btn-ghost" data-nav="about">About the artist</button>
+          </div>
+        </div>
+        <div class="home-accent">
+          <div class="paper-swatch">
+            <img src="images/sunset-lake.jpg" alt="" class="swatch-img" />
+            <div class="swatch-tag">No. 03 / Lake at Last Light / 2024</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 GALLERY -->
+      <section class="section section-gallery">
+        <header class="section-head">
+          <div class="head-num">02.</div>
+          <h2 class="head-title">The <em>Gallery</em></h2>
+          <p class="head-sub">Four works on view. Click a piece to read the notes that came with it.</p>
+        </header>
+        <div class="gallery-grid">
+          <article class="piece piece-0" data-id="sunset-lake">
+            <div class="piece-frame">
+              <img src="images/sunset-lake.jpg" alt="Lake at Last Light" />
+            </div>
+            <div class="piece-caption">
+              <div class="piece-num">No. 01</div>
+              <h3 class="piece-title">Lake at Last Light</h3>
+              <div class="piece-meta">
+                <span>Acrylic on canvas</span><span class="dot-sep">·</span>
+                <span>11 × 14"</span><span class="dot-sep">·</span><span>2024</span>
+              </div>
+            </div>
+          </article>
+          <article class="piece piece-1" data-id="beach-cat">
+            <div class="piece-frame">
+              <img src="images/beach-cat.jpg" alt="Sentinel by the Sea" />
+            </div>
+            <div class="piece-caption">
+              <div class="piece-num">No. 02</div>
+              <h3 class="piece-title">Sentinel by the Sea</h3>
+              <div class="piece-meta">
+                <span>Acrylic on canvas</span><span class="dot-sep">·</span>
+                <span>24 × 24"</span><span class="dot-sep">·</span><span>2023</span>
+              </div>
+            </div>
+          </article>
+          <article class="piece piece-2" data-id="collage-portrait">
+            <div class="piece-frame">
+              <img src="images/collage-portrait.jpg" alt="Crowned" />
+            </div>
+            <div class="piece-caption">
+              <div class="piece-num">No. 03</div>
+              <h3 class="piece-title">Crowned</h3>
+              <div class="piece-meta">
+                <span>Mixed media — acrylic, fabric, paper, lace</span><span class="dot-sep">·</span>
+                <span>18 × 24"</span><span class="dot-sep">·</span><span>2025</span>
+              </div>
+            </div>
+          </article>
+          <article class="piece piece-3" data-id="jazz">
+            <div class="piece-frame">
+              <img src="images/Jazz.jpg" alt="Jazz" />
+            </div>
+            <div class="piece-caption">
+              <div class="piece-num">No. 04</div>
+              <h3 class="piece-title">Jazz</h3>
+              <div class="piece-meta">
+                <span>Acrylic on canvas</span><span class="dot-sep">·</span>
+                <span>18 × 24&quot;</span><span class="dot-sep">·</span><span>2026</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 03 ABOUT -->
+      <section class="section section-about">
+        <header class="section-head">
+          <div class="head-num">03.</div>
+          <h2 class="head-title">About <em>Serica</em></h2>
+        </header>
+        <div class="about-grid">
+          <div class="about-portrait">
+            <div class="paper-swatch tilted">
+              <img src="images/collage-portrait.jpg" alt="Serica Jones" class="swatch-img" />
+              <div class="swatch-tag">No. 03 / Crowned / 2025</div>
+            </div>
+          </div>
+          <div class="about-copy">
+            <p class="about-lede">
+              Serica Jones is a painter and art school instructor working in acrylic and mixed media. Her work moves between memory-based landscapes and layered portraits — anything that can hold a story.
+            </p>
+            <p>
+              She began painting at a kitchen table in 2016 and now splits her weeks between making work and teaching. She’s most interested in the moment a painting “turns” — usually somewhere between the third and fourth layer — when a lesson from class meets an accident in the studio.
+            </p>
+            <p>
+              Recent work moves between two registers: quiet, distance-soft landscapes, and dense layered portraits that gather the textures of a life — flags, lace, sheet music, hair. Both are built with the same tools she teaches: drawing, edges, and patience.
+            </p>
+            <div class="pull-quote">
+              <span class="quote-mark">"</span>
+              You can’t use up creativity. The more you use, the more you have.
+              <span class="quote-attr">— Maya Angelou, <cite>Conversations with Maya Angelou</cite>, 1989</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 RESUME -->
+      <section class="section section-resume">
+        <header class="section-head">
+          <div class="head-num">04.</div>
+          <h2 class="head-title">Curriculum <em>Vitae</em></h2>
+          <p class="head-sub">A working record. Updated when something happens.</p>
+        </header>
+        <div class="cv-tabs">
+          <button class="active" data-tab="exhibitions">Selected exhibitions</button>
+          <button data-tab="works">Selected works</button>
+          <button data-tab="education">Education &amp; study</button>
+        </div>
+        <div class="cv-pane active" id="cv-exhibitions">
+          <div class="cv-list-head">Selected exhibitions</div>
+          <div class="cv-row upcoming">
+            <div class="cv-year">2026</div>
+            <div class="cv-body">
+              <div class="cv-title">Group show — Coastal Arts Center <span class="cv-tag">upcoming</span></div>
+              <div class="cv-where">Saint Augustine, FL</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2025</div>
+            <div class="cv-body">
+              <div class="cv-title">"Crowned &amp; Carried" — solo exhibition</div>
+              <div class="cv-where">Marigold Gallery, Atlanta GA</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2024</div>
+            <div class="cv-body">
+              <div class="cv-title">Small Works Annual</div>
+              <div class="cv-where">River Bend Co-op</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2023</div>
+            <div class="cv-body">
+              <div class="cv-title">Two-person — "Shorelines"</div>
+              <div class="cv-where">Studio 14, Brunswick GA</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2022</div>
+            <div class="cv-body">
+              <div class="cv-title">Open Studios (debut)</div>
+              <div class="cv-where">Hometown Arts Festival</div>
+            </div>
+          </div>
+        </div>
+        <div class="cv-pane" id="cv-works">
+          <div class="cv-list-head">Selected works</div>
+          <div class="cv-row">
+            <div class="cv-year">2026</div>
+            <div class="cv-body">
+              <div class="cv-title">Jazz</div>
+              <div class="cv-where">Acrylic · 18 × 24″</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2025</div>
+            <div class="cv-body">
+              <div class="cv-title">Crowned</div>
+              <div class="cv-where">Mixed media · 18 × 24″</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2024</div>
+            <div class="cv-body">
+              <div class="cv-title">Lake at Last Light</div>
+              <div class="cv-where">Acrylic · 11 × 14″</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2023</div>
+            <div class="cv-body">
+              <div class="cv-title">Sentinel by the Sea</div>
+              <div class="cv-where">Acrylic · 24 × 24″</div>
+            </div>
+          </div>
+        </div>
+        <div class="cv-pane" id="cv-education">
+          <div class="cv-list-head">Education &amp; study</div>
+          <div class="cv-row">
+            <div class="cv-year">2016 →</div>
+            <div class="cv-body">
+              <div class="cv-title">Self-directed practice</div>
+              <div class="cv-where">Workshops with M. Allard, K. Otieno, L. Pham</div>
+            </div>
+          </div>
+          <div class="cv-row">
+            <div class="cv-year">2019</div>
+            <div class="cv-body">
+              <div class="cv-title">Color Theory Intensive</div>
+              <div class="cv-where">Coastal Arts Center · 8 wks</div>
+            </div>
+          </div>
+        </div>
+        <div class="cv-download">
+          <button class="btn btn-ghost btn-sm">Download full CV (PDF) <span class="arrow">↓</span></button>
+        </div>
+      </section>
+
+      <!-- 05 WRITING -->
+      <section class="section section-writing">
+        <header class="section-head">
+          <div class="head-num">05.</div>
+          <h2 class="head-title">Notes from <em>the studio</em></h2>
+          <p class="head-sub">Short essays, mostly about process. Roughly monthly.</p>
+        </header>
+        <div class="posts">
+          <article class="post">
+            <div class="post-meta">
+              <span class="post-tag">Process</span>
+              <span class="post-date">April 22, 2026</span>
+              <span class="post-read">4 min read</span>
+            </div>
+            <div>
+              <h3 class="post-title">What I learned underpainting in burnt sienna for a year</h3>
+              <p class="post-excerpt">I stopped reaching for white gesso last spring. The work got warmer, slower, and a little harder to start — which turned out to be the point.</p>
+              <button class="post-link">Read the post <span class="arrow">→</span></button>
+            </div>
+          </article>
+          <article class="post">
+            <div class="post-meta">
+              <span class="post-tag">Notes</span>
+              <span class="post-date">March 03, 2026</span>
+              <span class="post-read">6 min read</span>
+            </div>
+            <div>
+              <h3 class="post-title">The grammar of a horizon line</h3>
+              <p class="post-excerpt">Where you put the horizon decides who the painting is for. A few notes from working through three sunset studies in one week.</p>
+              <button class="post-link">Read the post <span class="arrow">→</span></button>
+            </div>
+          </article>
+          <article class="post">
+            <div class="post-meta">
+              <span class="post-tag">Studio</span>
+              <span class="post-date">January 18, 2026</span>
+              <span class="post-read">3 min read</span>
+            </div>
+            <div>
+              <h3 class="post-title">On finishing — and on the ten paintings under each finished one</h3>
+              <p class="post-excerpt">Every piece in the studio has a small graveyard underneath it. I don't mind. It's where the painting learned what it didn't want to be.</p>
+              <button class="post-link">Read the post <span class="arrow">→</span></button>
+            </div>
+          </article>
+          <article class="post">
+            <div class="post-meta">
+              <span class="post-tag">Essays</span>
+              <span class="post-date">November 04, 2025</span>
+              <span class="post-read">5 min read</span>
+            </div>
+            <div>
+              <h3 class="post-title">Collage as a way of saying 'all of this, please'</h3>
+              <p class="post-excerpt">A short essay on why I started cutting up old fabric — and why 'Crowned' wouldn't exist without a yard sale in 2024.</p>
+              <button class="post-link">Read the post <span class="arrow">→</span></button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 06 CONTACT -->
+      <section class="section section-contact">
+        <header class="section-head">
+          <div class="head-num">06.</div>
+          <h2 class="head-title">Get in <em>touch</em></h2>
+        </header>
+        <div class="contact-grid">
+          <div class="contact-aside">
+            <div class="contact-block">
+              <div class="meta-k">Commissions</div>
+              <div class="meta-v">Currently open · limited slots each term</div>
+            </div>
+            <div class="contact-block">
+              <div class="meta-k">Email</div>
+              <div class="meta-v"><a href="mailto:hello@sericajones.studio">hello@sericajones.studio</a></div>
+            </div>
+            <div class="contact-block">
+              <div class="meta-k">Commission inquiries</div>
+              <div class="meta-v">Share size, subject, timeline, and budget range.</div>
+            </div>
+            <div class="contact-block">
+              <div class="meta-k">Elsewhere</div>
+              <div class="meta-v"><a href="#">@sericajones.studio</a> · Instagram</div>
+            </div>
+            <div class="contact-artwork">
+              <img src="images/beach-cat.jpg" alt="Sentinel by the Sea" />
+              <div class="caption-mono" style="margin-top:12px">Sentinel by the Sea · 2023</div>
+            </div>
+          </div>
+          <div class="contact-right">
+            <form class="contact-form" id="contact-form">
+              <div class="form-row">
+                <label>
+                  <span>Your name</span>
+                  <input type="text" name="name" required />
+                </label>
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" required />
+                </label>
+              </div>
+              <label class="full">
+                <span>This is about</span>
+                <div class="subject-pills">
+                  <button type="button" class="active" data-subject="commission">Commission</button>
+                  <button type="button" data-subject="other">Something else</button>
+                </div>
+              </label>
+              <label class="full">
+                <span>Message</span>
+                <textarea name="message" rows="5" required></textarea>
+              </label>
+              <button type="submit" class="btn btn-primary">Send <span class="arrow">→</span></button>
+            </form>
+            <div class="form-sent" style="display:none">
+              <div class="sent-mark">✓</div>
+              <h4>Thanks — message received.</h4>
+              <p>I read everything personally. Replies usually arrive within a week, sometimes faster if it's sunny and the brushes are drying.</p>
+              <button type="button" class="btn btn-ghost btn-sm" id="send-another">Send another</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site-foot">
+        <div>© 2026 Serica Jones · all paintings</div>
+        <div class="foot-mark">Serica Jones</div>
+        <div class="site-foot-byline">
+          Painted with pixels, wired with logic · By <a href="https://gerlinpl.com/" class="foot-credit" target="_blank" rel="noopener noreferrer">Gerlinpl</a>
+        </div>
+      </footer>
+
+    </div><!-- /#app-shell -->
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" style="display:none">
+      <div class="lightbox-inner">
+        <button class="lb-close" id="lb-close" aria-label="Close">✕</button>
+        <div class="lb-frame"><img id="lb-img" src="" alt="" /></div>
+        <div class="lb-caption">
+          <div class="lb-eyebrow" id="lb-eyebrow"></div>
+          <h3 class="lb-title" id="lb-title"></h3>
+          <p class="lb-blurb" id="lb-blurb"></p>
+          <div class="lb-meta">
+            <div>
+              <div class="meta-k">Size</div>
+              <div class="meta-v" id="lb-size"></div>
+            </div>
+            <div>
+              <div class="meta-k">Status</div>
+              <div class="meta-v">Available — inquire</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <template id="tpl-home">
-      <section class="hero">
-        <h1>Home</h1>
-      </section>
-    </template>
+    <!-- Cursor dab -->
+    <div class="cursor-dab" id="cursor-dab"></div>
 
-    <template id="tpl-about">
-      <section class="hero">
-        <h1>About</h1>
-      </section>
-    </template>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="js/transition.js"></script>
+    <script src="js/main.js"></script>
 
-    <template id="tpl-contact">
-      <section class="hero">
-        <h1>Contact</h1>
-      </section>
-    </template>
-
-    <script type="module" src="js/main.js"></script>
   </body>
 </html>
