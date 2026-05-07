@@ -6,7 +6,6 @@
 
   --transition-stroke-1: #FE5E41;
   --transition-stroke-2: #6E44FF;
-  /* Bigger strokes on screen; GSAP keeps the same 200→700 timeline in SVG units */
   --transition-art-scale: 1.55;
 
   --bg: #f0f2ef;
@@ -36,8 +35,10 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  @media (max-width: 1024px) {
+@media (max-width: 1024px) {
+  :root {
     font-size: 16px;
   }
 }
@@ -87,7 +88,7 @@ body {
   overflow-x: clip;
 }
 
-#root {
+#app-shell {
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
@@ -124,6 +125,7 @@ body {
   font-size: 1.125rem;
   font-weight: 500;
   letter-spacing: -0.02em;
+  cursor: pointer;
 }
 
 .hero {
@@ -158,7 +160,10 @@ h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
   margin: 32px 0;
-  @media (max-width: 1024px) {
+}
+
+@media (max-width: 1024px) {
+  h1 {
     font-size: 36px;
     margin: 20px 0;
   }
@@ -169,7 +174,10 @@ h2 {
   line-height: 118%;
   letter-spacing: -0.24px;
   margin: 0 0 8px;
-  @media (max-width: 1024px) {
+}
+
+@media (max-width: 1024px) {
+  h2 {
     font-size: 20px;
   }
 }
@@ -193,7 +201,6 @@ code {
   background: var(--code-bg);
 }
 
-/* Pin all edges to the layout viewport (no 100vw — avoids scrollbar width mismatch). */
 .transition-svg {
   position: fixed;
   inset: 0;
@@ -217,4 +224,25 @@ code {
 .transition-page {
   position: relative;
   z-index: 2;
+}
+
+.transition-brush-follow-html {
+  position: fixed;
+  inset: 0;
+  z-index: 10003;
+  margin: 0;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.transition-brush-follow-html img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.4));
+  will-change: left, top, transform;
 }
