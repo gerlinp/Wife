@@ -742,7 +742,8 @@ body[data-section="writing"]:not(.menu-open) .site-nav .nav-num {
   grid-template-columns: 1.4fr 1fr;
   gap: 48px;
   background: var(--paper-soft);
-  padding: 40px;
+  /* Extra top padding gives the close button its own space (no overlap on art) */
+  padding: 56px 40px 40px;
   max-width: 1200px;
   max-width: min(1200px, calc(100vw - 48px));
   max-height: 90vh;
@@ -754,12 +755,15 @@ body[data-section="writing"]:not(.menu-open) .site-nav .nav-num {
   position: absolute;
   top: 14px; right: 14px;
   width: 36px; height: 36px;
-  background: none;
-  border: 1px solid rgba(26,22,18,0.2);
+  background: var(--paper-soft);
+  border: 1px solid rgba(26,22,18,0.18);
   border-radius: 50%;
   cursor: pointer;
   font-size: 14px;
   color: var(--ink);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.16),
+    0 2px 6px rgba(0, 0, 0, 0.12);
 }
 .lb-frame img { width: 100%; height: auto; display: block; }
 .lb-caption {
@@ -1623,7 +1627,7 @@ body[data-section="contact"] #app-shell > .site-foot .foot-credit:hover {
   .form-row { grid-template-columns: 1fr; }
   .lightbox-inner {
     grid-template-columns: 1fr;
-    padding: 24px;
+    padding: 56px 24px 24px;
     max-width: min(1200px, calc(100vw - 24px));
     max-height: min(90vh, 90svh);
     max-height: min(90vh, 90svh, calc(100dvh - 32px));
