@@ -82,13 +82,23 @@
 
   var transition = null;
 
+  function scrollToTop() {
+    try {
+      // Always instant: we hide the jump behind the paint transition.
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    } catch (e) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   function navigate(name) {
     if (name === currentSection) return;
     if (transition) {
       transition.requestNavigate(name);
-    } else {
-      showSection(name);
+      return;
     }
+    showSection(name);
+    scrollToTop();
   }
 
   // ── Nav ───────────────────────────────────────────────────────────────────
@@ -157,6 +167,7 @@
 
   window.addEventListener('popstate', function () {
     showSection(readHash(), true);
+    scrollToTop();
   });
 
   // ── Lightbox ──────────────────────────────────────────────────────────────
@@ -295,6 +306,8 @@
       brushImg: brushImg,
       initialSection: readHash(),
       onMidNavigate: function (name) {
+        // Runs at full cover (midpoint) — safe time to jump scroll instantly.
+        scrollToTop();
         showSection(name);
       },
     });
