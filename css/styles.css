@@ -636,47 +636,55 @@ body[data-section="writing"]:not(.menu-open) .site-nav .nav-num {
 .section-gallery .head-num {
   color: var(--terra-deep);
 }
+/* ── Gallery grid ─────────────────────────────────────────────────── */
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   row-gap: 48px;
   column-gap: 22px;
+  align-items: start;
 }
+
 .piece {
   cursor: pointer;
   transition: transform 0.4s cubic-bezier(.2,.7,.2,1);
+  align-self: start;
 }
 .piece:hover { transform: translateY(-6px); }
 
-/* Row 1: lake (wide left) + sentinel (narrow right, dropped); row 2: jazz (v-centered) + crowned */
-.piece-0 {
-  grid-column: 1 / span 7;
-  grid-row: 1;
-  align-self: start;
-}
-.piece-1 {
-  grid-column: 8 / span 5;
-  grid-row: 1;
-  margin-top: 80px;
-  align-self: start;
-}
-.piece-2 {
-  grid-column: 7 / span 6;
-  grid-row: 2;
-  align-self: start;
-}
-.piece-3 {
-  grid-column: 1 / span 6;
-  grid-row: 2;
-  /* Sit mid-line with Crowned (taller tile) — avoids Jazz riding the row top */
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.piece-3 .piece-frame {
-  width: 100%;
-}
+/* ── Each piece spans N of 12 columns ─────────────────────────────── */
+.piece-0  { grid-column: span 7; }
+.piece-1  { grid-column: span 5; }
+.piece-2  { grid-column: span 5; }
+.piece-3  { grid-column: span 7; }
+.piece-4  { grid-column: span 4; }
+.piece-5  { grid-column: span 8; }
+.piece-6  { grid-column: span 4; }
+.piece-7  { grid-column: span 4; }
+.piece-8  { grid-column: span 4; }
+.piece-9  { grid-column: span 6; }
+.piece-10 { grid-column: span 6; }
+.piece-11 { grid-column: span 8; }
+.piece-12 { grid-column: span 4; }
+.piece-13 { grid-column: span 4; }
+.piece-14 { grid-column: span 4; }
+.piece-15 { grid-column: span 4; }
+.piece-16 { grid-column: span 7; }
+.piece-17 { grid-column: span 5; }
+.piece-18 { grid-column: span 8; }
+.piece-19 { grid-column: span 4; }
+.piece-20 { grid-column: span 5; }
+.piece-21 { grid-column: span 7; }
+.piece-22 { grid-column: span 4; }
+.piece-23 { grid-column: span 8; }
+.piece-24 { grid-column: span 4; }
+.piece-25 { grid-column: span 4; }
+.piece-26 { grid-column: span 4; }
+.piece-27 { grid-column: span 5; }
+.piece-28 { grid-column: span 7; }
+.piece-29 { grid-column: span 6; }
+.piece-30 { grid-column: span 3; }
+.piece-31 { grid-column: span 3; }
 
 .piece-frame {
   position: relative;
@@ -1781,22 +1789,18 @@ body[data-section="contact"] #app-shell > .site-foot .foot-credit:hover {
   .site-nav { transition: none; }
 }
 
-/* Gallery masonry from 768px up; narrower phones stack */
+/* Gallery responsive */
+@media (max-width: 1024px) {
+  .gallery-grid { grid-template-columns: 1fr 1fr; column-gap: 16px; row-gap: 32px; }
+  .piece-0, .piece-1, .piece-2, .piece-3, .piece-4, .piece-5,
+  .piece-6, .piece-7, .piece-8, .piece-9, .piece-10, .piece-11,
+  .piece-12, .piece-13, .piece-14, .piece-15, .piece-16, .piece-17,
+  .piece-18, .piece-19, .piece-20, .piece-21, .piece-22, .piece-23,
+  .piece-24, .piece-25, .piece-26, .piece-27, .piece-28, .piece-29,
+  .piece-30, .piece-31 { grid-column: span 1; }
+}
 @media (max-width: 767px) {
   .gallery-grid { grid-template-columns: 1fr; }
-  .piece-0, .piece-1, .piece-2, .piece-3 {
-    grid-column: 1 / -1;
-    grid-row: auto;
-    margin-top: 0;
-  }
-  .piece-3 {
-    display: block;
-    align-self: stretch;
-  }
-  .piece-3 .piece-frame {
-    max-width: none;
-    align-self: stretch;
-  }
 }
 
 @media (max-width: 768px) {
