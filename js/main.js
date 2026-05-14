@@ -29,6 +29,34 @@
       size: '18 × 24"',
       src: 'images/Jazz.jpg',
     },
+    'disco-baby': { eyebrow: 'No. 05', title: 'Disco Baby', blurb: '', size: '', src: 'assets/portfolio/Disco%20Baby%20copy.jpg' },
+    'earth': { eyebrow: 'No. 06', title: 'Earth', blurb: '', size: '', src: 'assets/portfolio/Earth.jpg' },
+    'frogador': { eyebrow: 'No. 07', title: 'Frogador', blurb: '', size: '', src: 'assets/portfolio/Frogador.jpg' },
+    'brown-girl': { eyebrow: 'No. 08', title: 'Brown Girl', blurb: '', size: '', src: 'assets/portfolio/brown%20girl~2.jpeg' },
+    'cool-hand-luke': { eyebrow: 'No. 09', title: 'Cool Hand Luke', blurb: '', size: '', src: 'assets/portfolio/cool%20hand%20luke.jpg' },
+    'dusty-still': { eyebrow: 'No. 10', title: 'Dusty Still', blurb: '', size: '', src: 'assets/portfolio/dusty%20still.jpg' },
+    'figure-1': { eyebrow: 'No. 11', title: 'Figure I', blurb: '', size: '', src: 'assets/portfolio/figure%201.jpg' },
+    'flick': { eyebrow: 'No. 12', title: 'Flick', blurb: '', size: '', src: 'assets/portfolio/flick.jpg' },
+    'jogger': { eyebrow: 'No. 13', title: 'The Jogger', blurb: '', size: '', src: 'assets/portfolio/jogger%20all.jpg' },
+    'peace': { eyebrow: 'No. 14', title: 'Peace', blurb: '', size: '', src: 'assets/portfolio/peace.jpg' },
+    'painting1': { eyebrow: 'No. 15', title: 'Untitled', blurb: '', size: '', src: 'assets/portfolio/painting1.JPG' },
+    'wacky-olympics-a': { eyebrow: 'No. 16', title: 'Wacky Olympics', blurb: '', size: '', src: 'assets/portfolio/wacky%20olympics%20a..jpg' },
+    'wacky-olympics-2': { eyebrow: 'No. 17', title: 'Wacky Olympics II', blurb: '', size: '', src: 'assets/portfolio/wacky%20olympics%202.jpg' },
+    'img-17-i': { eyebrow: 'No. 18', title: 'Studio Work I', blurb: '', size: '', src: 'assets/portfolio/IMG_20171101_164423397.jpg' },
+    'img-17-ii': { eyebrow: 'No. 19', title: 'Studio Work II', blurb: '', size: '', src: 'assets/portfolio/IMG_20171101_165401239.jpg' },
+    'img-20-i': { eyebrow: 'No. 20', title: 'Studio Work III', blurb: '', size: '', src: 'assets/portfolio/IMG_20200324_125501455~2.jpg' },
+    'img-20-ii': { eyebrow: 'No. 21', title: 'Studio Work IV', blurb: '', size: '', src: 'assets/portfolio/IMG_20200708_210820590.jpg' },
+    'img-22-i': { eyebrow: 'No. 22', title: 'Studio Work V', blurb: '', size: '', src: 'assets/portfolio/IMG_20220401_162321232~2.jpg' },
+    'img-22-ii': { eyebrow: 'No. 23', title: 'Studio Work VI', blurb: '', size: '', src: 'assets/portfolio/IMG_20220414_021615871~3.jpg' },
+    'img-22-iii': { eyebrow: 'No. 24', title: 'Studio Work VII', blurb: '', size: '', src: 'assets/portfolio/IMG_20220414_021959543~5.jpg' },
+    'img-23': { eyebrow: 'No. 25', title: 'Studio Work VIII', blurb: '', size: '', src: 'assets/portfolio/IMG_20231215_123908218~2.jpg' },
+    'img-24': { eyebrow: 'No. 26', title: 'Studio Work IX', blurb: '', size: '', src: 'assets/portfolio/IMG_20241119_135833020~2.jpg' },
+    'women-01': { eyebrow: 'No. 27', title: 'Figure Study I', blurb: '', size: '', src: 'assets/portfolio/body-profile-women01.jpg' },
+    'women-02': { eyebrow: 'No. 28', title: 'Figure Study II', blurb: '', size: '', src: 'assets/portfolio/body-profile-women02.jpg' },
+    'women-03': { eyebrow: 'No. 29', title: 'Figure Study III', blurb: '', size: '', src: 'assets/portfolio/body-profile-women03.jpg' },
+    'man-01': { eyebrow: 'No. 30', title: 'Figure Study IV', blurb: '', size: '', src: 'assets/portfolio/body-profile-man01.jpg' },
+    'man-02': { eyebrow: 'No. 31', title: 'Figure Study V', blurb: '', size: '', src: 'assets/portfolio/body-profile-man02.jpg' },
+    'man-03': { eyebrow: 'No. 32', title: 'Figure Study VI', blurb: '', size: '', src: 'assets/portfolio/body-profile-man03.jpg' },
   };
 
   var SECTIONS = ['home', 'gallery', 'about', 'resume', 'writing', 'contact'];
@@ -185,8 +213,11 @@
     lbImg.alt = p.title;
     lbEyebrow.textContent = p.eyebrow;
     lbTitle.textContent = p.title;
-    lbBlurb.textContent = p.blurb;
-    lbSize.textContent = p.size;
+    lbBlurb.textContent = p.blurb || '';
+    lbBlurb.style.display = p.blurb ? '' : 'none';
+    lbSize.textContent = p.size || '';
+    var lbSizeRow = lbSize.closest('.meta-k')?.parentElement;
+    if (lbSizeRow) lbSizeRow.style.display = p.size ? '' : 'none';
     lightbox.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   }
