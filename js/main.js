@@ -26,6 +26,12 @@ function escapeAttr(str) {
   return escapeHtml(str).replace(/'/g, "&#39;");
 }
 
+// Indices (0-based) of paintings that should span 2 columns for rhythm
+// Matches: sunset-lake(0), collage-portrait(1), img-20-ii(5), img-22-iii(6),
+//          img-17-ii(8), frogador(12), img-22-i(14), img-17-i(19),
+//          cool-hand-luke(20), figure-1(22)
+var FEATURED_INDICES = new Set([0, 1, 5, 6, 8, 12, 14, 19, 20, 22]);
+
 function renderGalleryGrid(grid) {
   if (!grid) return;
   grid.innerHTML = "";
@@ -47,25 +53,74 @@ function renderGalleryGrid(grid) {
       : "";
 
     var article = document.createElement("article");
-    article.className = "piece piece-" + i;
+    article.className = "piece" + (FEATURED_INDICES.has(i) ? " piece-featured" : "");
     article.dataset.id = p.id;
     article.innerHTML =
-      '<div class="piece-frame"><img src="' +
-      escapeAttr(p.src) +
-      '" alt="' +
-      escapeAttr(p.title) +
-      '" /></div>' +
-      '<div class="piece-caption">' +
-      '<div class="piece-num">' +
-      escapeHtml(p.eyebrow) +
+      '<div class="piece-frame">' +
+      '<img src="' + escapeAttr(p.src) + '" alt="' + escapeAttr(p.title) + '" loading="lazy" />' +
+      '<span class="piece-tape piece-tape-tl"></span>' +
+      '<span class="piece-tape piece-tape-br"></span>' +
       "</div>" +
-      '<h3 class="piece-title">' +
-      escapeHtml(p.title) +
-      "</h3>" +
+      '<div class="piece-caption">' +
+      '<div class="piece-num">' + escapeHtml(p.eyebrow) + "</div>" +
+      '<h3 class="piece-title">' + escapeHtml(p.title) + "</h3>" +
       metaHtml +
       "</div>";
     grid.appendChild(article);
   });
+}
+
+// ── Masonry row-span layout ──────────────────────────────────────────────────
+function layoutPiece(piece) {
+  var grid = document.getElementById("gallery-grid");
+  if (!grid) return;
+  var img = piece.querySelector("img");
+  var frame = piece.querySelector(".piece-frame");
+  var caption = piece.querySelector(".piece-caption");
+  if (!img || !frame || !img.naturalWidth) return;
+
+  var fs = getComputedStyle(frame);
+  var padL = parseFloat(fs.paddingLeft)  || 0;
+  var padR = parseFloat(fs.paddingRight) || 0;
+  var padT = parseFloat(fs.paddingTop)   || 0;
+  var padB = parseFloat(fs.paddingBottom)|| 0;
+  var innerW = frame.clientWidth - padL - padR;
+  if (innerW <= 0) return;
+
+  var imgH     = (img.naturalHeight / img.naturalWidth) * innerW;
+  var frameH   = imgH + padT + padB;
+  var capH     = caption ? caption.scrollHeight : 0;
+  var capMargin= caption ? parseFloat(getComputedStyle(caption).marginTop) || 0 : 0;
+  var piecePadB= parseFloat(getComputedStyle(piece).paddingBottom) || 0;
+
+  var gs    = getComputedStyle(grid);
+  var rowH  = parseFloat(gs.gridAutoRows) || 8;
+  var rowGap= parseFloat(gs.rowGap) || 0;
+
+  var total = frameH + capMargin + capH + piecePadB;
+  var span  = Math.max(1, Math.ceil((total + rowGap) / (rowH + rowGap)));
+  piece.style.gridRowEnd = "span " + span;
+}
+
+function layoutAllPieces() {
+  var grid = document.getElementById("gallery-grid");
+  if (!grid) return;
+  grid.querySelectorAll(".piece").forEach(layoutPiece);
+}
+
+function initMasonryLayout() {
+  var grid = document.getElementById("gallery-grid");
+  if (!grid) return;
+  grid.querySelectorAll("img").forEach(function (img) {
+    img.addEventListener("load",  function () { layoutPiece(img.closest(".piece")); });
+    img.addEventListener("error", function () { layoutPiece(img.closest(".piece")); });
+  });
+  layoutAllPieces();
+  setTimeout(layoutAllPieces, 50);
+  setTimeout(layoutAllPieces, 300);
+  setTimeout(layoutAllPieces, 1200);
+  new ResizeObserver(layoutAllPieces).observe(grid);
+  window.addEventListener("resize", layoutAllPieces);
 }
 
 function renderHomeFeature(container) {
@@ -428,6 +483,7 @@ if (svg && brushPanel && brushImg && window.SericaTransition) {
 // ── Populate DOM from shared painting data ───────────────────────────────────
 renderGalleryGrid(document.getElementById("gallery-grid"));
 bindGalleryPieces();
+initMasonryLayout();
 renderHomeFeature(document.getElementById("home-feature-swatch"));
 renderAboutPortrait(document.getElementById("about-portrait-swatch"));
 renderCvWorks(document.getElementById("cv-works-rows"));
