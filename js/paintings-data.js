@@ -65,8 +65,17 @@ export const PAINTINGS = [
     src: "images/Jazz.jpg",
   },
   {
-    id: "img-20-i",
+    id: "verna",
     eyebrow: "No. 04",
+    title: "Verna",
+    medium: "",
+    size: "",
+    blurb: "",
+    src: "assets/portfolio/verna.jpg",
+  },
+  {
+    id: "img-20-i",
+    eyebrow: "No. 05",
     title: "Studio Work",
     year: 2020,
     medium: "",
@@ -76,7 +85,7 @@ export const PAINTINGS = [
   },
   {
     id: "beach-cat",
-    eyebrow: "No. 05",
+    eyebrow: "No. 06",
     title: "Sentinel by the Sea",
     year: 2023,
     medium: "Acrylic on canvas",
@@ -87,7 +96,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-20-ii",
-    eyebrow: "No. 06",
+    eyebrow: "No. 07",
     title: "Falls in the Green",
     year: 2020,
     medium: "",
@@ -97,7 +106,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-22-iii",
-    eyebrow: "No. 07",
+    eyebrow: "No. 08",
     title: "Poetic Justice",
     year: 2022,
     medium: "",
@@ -107,7 +116,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-22-ii",
-    eyebrow: "No. 08",
+    eyebrow: "No. 09",
     title: "Fairy",
     year: 2022,
     medium: "",
@@ -117,7 +126,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-17-ii",
-    eyebrow: "No. 09",
+    eyebrow: "No. 10",
     title: "Forever — Study",
     year: 2017,
     medium: "",
@@ -127,7 +136,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-24",
-    eyebrow: "No. 10",
+    eyebrow: "No. 11",
     title: "Forever Love",
     year: 2024,
     medium: "",
@@ -138,7 +147,7 @@ export const PAINTINGS = [
   // ── Middle third: mixed-energy ─────────────────────────────────────────────
   {
     id: "earth",
-    eyebrow: "No. 11",
+    eyebrow: "No. 12",
     title: "Earth",
     medium: "",
     size: "",
@@ -147,7 +156,7 @@ export const PAINTINGS = [
   },
   {
     id: "disco-baby",
-    eyebrow: "No. 12",
+    eyebrow: "No. 13",
     title: "Disco Baby",
     medium: "",
     size: "",
@@ -156,7 +165,7 @@ export const PAINTINGS = [
   },
   {
     id: "frogador",
-    eyebrow: "No. 13",
+    eyebrow: "No. 14",
     title: "Frogador",
     medium: "",
     size: "",
@@ -165,7 +174,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-23",
-    eyebrow: "No. 14",
+    eyebrow: "No. 15",
     title: "350",
     year: 2023,
     medium: "",
@@ -175,7 +184,7 @@ export const PAINTINGS = [
   },
   {
     id: "img-22-i",
-    eyebrow: "No. 15",
+    eyebrow: "No. 16",
     title: "Burning City, Burning Tree",
     year: 2022,
     medium: "",
@@ -185,7 +194,7 @@ export const PAINTINGS = [
   },
   {
     id: "jogger",
-    eyebrow: "No. 16",
+    eyebrow: "No. 17",
     title: "The Jogger",
     medium: "",
     size: "",
@@ -194,7 +203,7 @@ export const PAINTINGS = [
   },
   {
     id: "wacky-olympics-2",
-    eyebrow: "No. 17",
+    eyebrow: "No. 18",
     title: "Olympics — Ice",
     medium: "",
     size: "",
@@ -203,7 +212,7 @@ export const PAINTINGS = [
   },
   {
     id: "wacky-olympics-a",
-    eyebrow: "No. 18",
+    eyebrow: "No. 19",
     title: "Olympics — Ant",
     medium: "",
     size: "",
@@ -212,7 +221,7 @@ export const PAINTINGS = [
   },
   {
     id: "dusty-still",
-    eyebrow: "No. 19",
+    eyebrow: "No. 20",
     title: "Dusty Still",
     medium: "",
     size: "",
@@ -222,7 +231,7 @@ export const PAINTINGS = [
   // ── Lower third: monochrome ─────────────────────────────────────────────────
   {
     id: "img-17-i",
-    eyebrow: "No. 20",
+    eyebrow: "No. 21",
     title: "The Kiss",
     year: 2017,
     medium: "",
@@ -232,7 +241,7 @@ export const PAINTINGS = [
   },
   {
     id: "cool-hand-luke",
-    eyebrow: "No. 21",
+    eyebrow: "No. 22",
     title: "Cool Hand Luke",
     medium: "",
     size: "",
@@ -241,7 +250,7 @@ export const PAINTINGS = [
   },
   {
     id: "peace",
-    eyebrow: "No. 22",
+    eyebrow: "No. 23",
     title: "The Dancer",
     medium: "",
     size: "",
@@ -250,7 +259,7 @@ export const PAINTINGS = [
   },
   {
     id: "figure-1",
-    eyebrow: "No. 23",
+    eyebrow: "No. 24",
     title: "Ribcage, Reclining",
     medium: "",
     size: "",
@@ -259,7 +268,7 @@ export const PAINTINGS = [
   },
   {
     id: "flick",
-    eyebrow: "No. 24",
+    eyebrow: "No. 25",
     title: "Pelvis & Leg",
     medium: "",
     size: "",
@@ -268,7 +277,7 @@ export const PAINTINGS = [
   },
   {
     id: "brown-girl",
-    eyebrow: "No. 25",
+    eyebrow: "No. 26",
     title: "Brown Girl",
     medium: "",
     size: "",
@@ -278,7 +287,7 @@ export const PAINTINGS = [
   // ── Bottom: figure study series ────────────────────────────────────────────
   {
     id: "women-01",
-    eyebrow: "No. 26",
+    eyebrow: "No. 27",
     title: "Standing — Skin",
     medium: "",
     size: "",
@@ -287,7 +296,7 @@ export const PAINTINGS = [
   },
   {
     id: "women-02",
-    eyebrow: "No. 27",
+    eyebrow: "No. 28",
     title: "Standing — Muscle",
     medium: "",
     size: "",
@@ -296,7 +305,7 @@ export const PAINTINGS = [
   },
   {
     id: "women-03",
-    eyebrow: "No. 28",
+    eyebrow: "No. 29",
     title: "Standing — Bone",
     medium: "",
     size: "",
@@ -305,7 +314,7 @@ export const PAINTINGS = [
   },
   {
     id: "man-01",
-    eyebrow: "No. 29",
+    eyebrow: "No. 30",
     title: "Seated — Skin",
     medium: "",
     size: "",
@@ -314,7 +323,7 @@ export const PAINTINGS = [
   },
   {
     id: "man-02",
-    eyebrow: "No. 30",
+    eyebrow: "No. 31",
     title: "Seated — Muscle",
     medium: "",
     size: "",
@@ -323,7 +332,7 @@ export const PAINTINGS = [
   },
   {
     id: "man-03",
-    eyebrow: "No. 31",
+    eyebrow: "No. 32",
     title: "Seated — Bone",
     medium: "",
     size: "",
