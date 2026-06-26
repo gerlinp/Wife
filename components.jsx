@@ -2,48 +2,22 @@
 // Site sections for Serica Jones — artist portfolio.
 // =====================================================================
 
-const PAINTINGS = [
-  {
-    id: "sunset-lake",
-    src: "images/sunset-lake.jpg",
-    title: "Lake at Last Light",
-    year: 2024,
-    medium: "Acrylic on canvas",
-    size: '11 × 14"',
-    blurb:
-      "A sun caught in the moment of sinking — the lake doubles the sky and the silhouettes hold the frame.",
-  },
-  {
-    id: "beach-cat",
-    src: "images/beach-cat.jpg",
-    title: "Sentinel by the Sea",
-    year: 2023,
-    medium: "Acrylic on canvas",
-    size: '24 × 24"',
-    blurb:
-      "Painted from memory of a stretch of Caribbean shore. The small figure on the sand is a familiar one — patient, listening.",
-  },
-  {
-    id: "collage-portrait",
-    src: "images/collage-portrait.jpg",
-    title: "Crowned",
-    year: 2025,
-    medium: "Mixed media — acrylic, fabric, paper, lace",
-    size: '18 × 24"',
-    blurb:
-      "Built up in layers — a portrait of identity carried as adornment. The flag, the palette, the lace — all things she chose to wear.",
-  },
-  {
-    id: "jazz",
-    src: "images/Jazz.jpg",
-    title: "Jazz",
-    year: 2026,
-    medium: "Acrylic on canvas",
-    size: '18 × 24"',
-    blurb:
-      "From a small club with the lights low — brass and warmth, the shapes half-remembered the next morning. I kept it loose on purpose: rhythm first, detail only where the music landed.",
-  },
-];
+import {
+  PAINTINGS,
+  HOME_FEATURE_PAINTING_ID,
+  ABOUT_PORTRAIT_PAINTING_ID,
+  CONTACT_FEATURE_PAINTING_ID,
+  CV_SELECTED_WORK_IDS,
+  COLLAGE_ESSAY_PAINTING_ID,
+  paintingById,
+  cvNoteFromPainting,
+} from "./js/paintings-data.js";
+
+const homeFeaturePainting = paintingById(HOME_FEATURE_PAINTING_ID);
+const aboutPortraitPainting = paintingById(ABOUT_PORTRAIT_PAINTING_ID);
+const contactFeaturePainting = paintingById(CONTACT_FEATURE_PAINTING_ID);
+const collageEssayTitle =
+  paintingById(COLLAGE_ESSAY_PAINTING_ID)?.title ?? "";
 
 // ---------- Nav -------------------------------------------------------
 function Nav({ current, onNav }) {
@@ -118,11 +92,14 @@ function Home({ onNav }) {
       <div className="home-accent">
         <div className="paper-swatch">
           <img
-            src="images/sunset-lake.jpg"
+            src={homeFeaturePainting.src}
             alt=""
             className="swatch-img"
           />
-          <div className="swatch-tag">No. 03 / Lake at Last Light / 2024</div>
+          <div className="swatch-tag">
+            {homeFeaturePainting.eyebrow} / {homeFeaturePainting.title} /{" "}
+            {homeFeaturePainting.year}
+          </div>
         </div>
       </div>
     </section>
@@ -130,6 +107,21 @@ function Home({ onNav }) {
 }
 
 // ---------- Gallery ---------------------------------------------------
+function PieceMeta({ p }) {
+  const nodes = [];
+  if (p.medium) nodes.push(<span key="m">{p.medium}</span>);
+  if (p.size) {
+    if (nodes.length) nodes.push(<span key="d1" className="dot-sep">·</span>);
+    nodes.push(<span key="s">{p.size}</span>);
+  }
+  if (p.year != null && p.year !== "") {
+    if (nodes.length) nodes.push(<span key="d2" className="dot-sep">·</span>);
+    nodes.push(<span key="y">{p.year}</span>);
+  }
+  if (!nodes.length) return null;
+  return <div className="piece-meta">{nodes}</div>;
+}
+
 function Gallery({ onOpen }) {
   return (
     <section className="section section-gallery" data-screen-label="02 Gallery">
@@ -139,8 +131,7 @@ function Gallery({ onOpen }) {
           The <em>Gallery</em>
         </h2>
         <p className="head-sub">
-          Four works on view. Click a piece to read the notes that came with
-          it.
+          Works on view. Click a piece to open it.
         </p>
       </header>
 
@@ -155,17 +146,9 @@ function Gallery({ onOpen }) {
               <img src={p.src} alt={p.title} />
             </div>
             <div className="piece-caption">
-              <div className="piece-num">
-                No. {String(i + 1).padStart(2, "0")}
-              </div>
+              <div className="piece-num">{p.eyebrow}</div>
               <h3 className="piece-title">{p.title}</h3>
-              <div className="piece-meta">
-                <span>{p.medium}</span>
-                <span className="dot-sep">·</span>
-                <span>{p.size}</span>
-                <span className="dot-sep">·</span>
-                <span>{p.year}</span>
-              </div>
+              <PieceMeta p={p} />
             </div>
           </article>
         ))}
@@ -187,16 +170,16 @@ function Lightbox({ piece, onClose }) {
           <img src={piece.src} alt={piece.title} />
         </div>
         <div className="lb-caption">
-          <div className="lb-eyebrow">
-            {piece.year} · {piece.medium}
-          </div>
+          <div className="lb-eyebrow">{piece.eyebrow}</div>
           <h3 className="lb-title">{piece.title}</h3>
-          <p className="lb-blurb">{piece.blurb}</p>
+          {piece.blurb ? <p className="lb-blurb">{piece.blurb}</p> : null}
           <div className="lb-meta">
-            <div>
-              <div className="meta-k">Size</div>
-              <div className="meta-v">{piece.size}</div>
-            </div>
+            {piece.size ? (
+              <div>
+                <div className="meta-k">Size</div>
+                <div className="meta-v">{piece.size}</div>
+              </div>
+            ) : null}
             <div>
               <div className="meta-k">Status</div>
               <div className="meta-v">Available — inquire</div>
@@ -222,8 +205,15 @@ function About() {
       <div className="about-grid">
         <div className="about-portrait">
           <div className="paper-swatch tilted">
-            <img src="images/collage-portrait.jpg" alt="Serica Jones" className="swatch-img" />
-            <div className="swatch-tag">No. 03 / Crowned / 2025</div>
+            <img
+              src={aboutPortraitPainting.src}
+              alt="Serica Jones"
+              className="swatch-img"
+            />
+            <div className="swatch-tag">
+              {aboutPortraitPainting.eyebrow} / {aboutPortraitPainting.title} /{" "}
+              {aboutPortraitPainting.year}
+            </div>
           </div>
         </div>
 
@@ -271,7 +261,7 @@ const RESUME = {
     },
     {
       year: "2025",
-      title: ""Crowned & Carried" — solo exhibition",
+      title: '"Crowned & Carried" — solo exhibition',
       where: "Marigold Gallery, Atlanta GA",
     },
     {
@@ -281,7 +271,7 @@ const RESUME = {
     },
     {
       year: "2023",
-      title: "Two-person — "Shorelines"",
+      title: 'Two-person — "Shorelines"',
       where: "Studio 14, Brunswick GA",
     },
     {
@@ -290,12 +280,13 @@ const RESUME = {
       where: "Hometown Arts Festival",
     },
   ],
-  selectedWorks: [
-    { year: "2026", title: "Jazz", note: "Acrylic · 18 × 24″" },
-    { year: "2025", title: "Crowned", note: "Mixed media · 18 × 24″" },
-    { year: "2024", title: "Lake at Last Light", note: "Acrylic · 11 × 14″" },
-    { year: "2023", title: "Sentinel by the Sea", note: "Acrylic · 24 × 24″" },
-  ],
+  selectedWorks: CV_SELECTED_WORK_IDS.map((id) => paintingById(id))
+    .filter(Boolean)
+    .map((p) => ({
+      year: String(p.year),
+      title: p.title,
+      note: cvNoteFromPainting(p),
+    })),
   education: [
     {
       year: "2016 →",
@@ -402,7 +393,9 @@ const POSTS = [
     read: "5 min",
     title: "Collage as a way of saying 'all of this, please'",
     excerpt:
-      "A short essay on why I started cutting up old fabric — and why 'Crowned' wouldn't exist without a yard sale in 2024.",
+      "A short essay on why I started cutting up old fabric — and why '" +
+      collageEssayTitle +
+      "' wouldn't exist without a yard sale in 2024.",
     tag: "Essays",
   },
 ];
@@ -493,9 +486,12 @@ function Contact() {
           </div>
 
           <div className="contact-artwork">
-            <img src="images/beach-cat.jpg" alt="Sentinel by the Sea" />
-            <div className="caption-mono" style={{marginTop: "12px"}}>
-              Sentinel by the Sea · 2023
+            <img
+              src={contactFeaturePainting.src}
+              alt={contactFeaturePainting.title}
+            />
+            <div className="caption-mono" style={{ marginTop: "12px" }}>
+              {contactFeaturePainting.title} · {contactFeaturePainting.year}
             </div>
           </div>
         </div>
